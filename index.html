@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>主题包下载</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --line:#e5e7eb; --ink:#111827;
+    --muted:#6b7280; --accent:#1f2937; --accent-ink:#ffffff; --hover:#f3f4f6;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
+         "Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+
+  header{padding:52px 0 28px}
+  h1{margin:0 0 10px;font-size:28px;letter-spacing:-.02em;font-weight:650}
+  header p{margin:0;color:var(--muted);font-size:14.5px;max-width:640px}
+
+  .tabs{
+    display:flex;gap:8px;flex-wrap:wrap;padding:14px;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    position:sticky;top:12px;z-index:20;
+    box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px -12px rgba(16,24,40,.12);
+  }
+  .tab{
+    flex:1 1 0;min-width:96px;display:flex;flex-direction:column;gap:2px;
+    align-items:center;justify-content:center;
+    padding:11px 10px;border-radius:10px;border:1px solid transparent;
+    background:transparent;cursor:pointer;color:var(--muted);
+    font:inherit;transition:.15s;
+  }
+  .tab b{font-size:16px;font-weight:650;letter-spacing:.02em;color:var(--ink)}
+  .tab small{font-size:11.5px;color:var(--muted)}
+  .tab:hover{background:var(--hover)}
+  .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent)}
+  .tab[aria-selected="true"] b,.tab[aria-selected="true"] small{color:var(--accent-ink)}
+
+  .bar{display:flex;align-items:center;gap:14px;margin:26px 0 16px;flex-wrap:wrap}
+  .bar h2{margin:0;font-size:15px;font-weight:650}
+  .bar .range{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+  .bar .spacer{flex:1}
+  input[type=search]{
+    width:190px;padding:8px 12px;border-radius:9px;border:1px solid var(--line);
+    background:var(--card);font:inherit;font-size:13.5px;color:var(--ink);outline:none;
+  }
+  input[type=search]:focus{border-color:#9ca3af;box-shadow:0 0 0 3px rgba(156,163,175,.18)}
+  .copy{
+    padding:8px 13px;border-radius:9px;border:1px solid var(--line);background:var(--card);
+    font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer;transition:.15s;
+  }
+  .copy:hover{background:var(--hover)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px;
+    transition:.15s;
+  }
+  .card:hover{border-color:#d1d5db;box-shadow:0 2px 4px rgba(16,24,40,.04),0 12px 28px -18px rgba(16,24,40,.25)}
+  .card-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .num{font-size:19px;font-weight:650;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .sz{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .sw{display:flex;height:8px;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+  .sw i{flex:1}
+  .meta{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px;margin:0}
+  .meta dt{color:var(--muted)}
+  .meta dd{margin:0;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{font-size:11px;color:var(--muted);background:var(--bg);border:1px solid var(--line);
+        padding:2px 7px;border-radius:99px;white-space:nowrap}
+  .dl{
+    margin-top:auto;display:block;text-align:center;text-decoration:none;
+    padding:9px;border-radius:9px;background:var(--accent);color:var(--accent-ink);
+    font-size:13.5px;font-weight:600;transition:.15s;
+  }
+  .dl:hover{background:#0b1220}
+  .empty{grid-column:1/-1;padding:60px 0;text-align:center;color:var(--muted);font-size:14px}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);
+         color:var(--muted);font-size:12.5px}
+  footer code{background:var(--card);border:1px solid var(--line);border-radius:5px;
+              padding:1px 5px;font-size:12px}
+  @media (max-width:600px){
+    .wrap{padding:0 14px 56px}
+    header{padding:30px 0 18px}
+    h1{font-size:22px}
+    header p{font-size:13.5px}
+    .tabs{top:8px;padding:8px;gap:6px;display:grid;grid-template-columns:repeat(2,1fr)}
+    .tab{min-width:0;padding:9px 8px;overflow:hidden}
+    .tab b{font-size:14px}
+    .tab small{font-size:10.5px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:100%}
+    .bar{gap:10px;margin:18px 0 12px}
+    .bar h2{font-size:14px}
+    .bar .range{font-size:11.5px;flex:1 1 100%;order:3;margin-top:-4px}
+    .bar .spacer{display:none}
+    input[type=search]{width:auto;flex:1 1 120px}
+    .copy{flex:0 0 auto}
+    .grid{grid-template-columns:1fr;gap:12px}
+    .num{font-size:18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>主题包下载</h1>
+    <p>共 100 个主题包，按标签平均分成 4 组，每组 25 个。选自己的标签，下载需要的主题即可。</p>
+  </header>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <div class="bar">
+    <h2 id="groupName"></h2>
+    <span class="range" id="groupRange"></span>
+    <span class="spacer"></span>
+    <input type="search" id="q" placeholder="搜索编号，如 31" autocomplete="off">
+    <button class="copy" id="copy">复制本组链接</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    下载后到 Shopify 后台 → 在线商店 → 主题 → 添加主题 → 上传 zip 文件。
+    每个包都已包含完整的 427 个文件，根目录为 <code>layout/theme.liquid</code>，可直接上传。
+  </footer>
+</div>
+
+<script>
+const DATA = [{"n":31,"src":1,"pal":"graphite","depth":0,"a1":"#26282C","a2":"#6C747F","bg2":"#F4F5F5","text":"#19191A","font":"helvetica","pw":1200,"radius":0,"spacing":0,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":2.5,"g":"cqz","palCn":"石墨灰"},{"n":32,"src":4,"pal":"ink","depth":0,"a1":"#212330","a2":"#5B628F","bg2":"#F3F4F6","text":"#18181B","font":"karla","pw":1250,"radius":4,"spacing":32,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":2.7,"g":"cqz","palCn":"墨黑"},{"n":33,"src":7,"pal":"navy","depth":0,"a1":"#1C2436","a2":"#4963A2","bg2":"#F2F4F8","text":"#16181D","font":"quicksand","pw":1300,"radius":8,"spacing":52,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":2.58,"g":"cqz","palCn":"藏青"},{"n":34,"src":10,"pal":"cobalt","depth":0,"a1":"#17243B","a2":"#3865B2","bg2":"#F1F4F9","text":"#15181E","font":"assistant","pw":1350,"radius":16,"spacing":20,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":2.99,"g":"cqz","palCn":"钴蓝"},{"n":35,"src":3,"pal":"steel","depth":0,"a1":"#202A31","a2":"#597A91","bg2":"#F3F5F7","text":"#171A1C","font":"montserrat","pw":1400,"radius":40,"spacing":40,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.23,"g":"cqz","palCn":"钢蓝"},{"n":36,"src":6,"pal":"teal","depth":0,"a1":"#1D3235","a2":"#4D959D","bg2":"#F2F7F7","text":"#161C1D","font":"jost","pw":1450,"radius":2,"spacing":60,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.45,"g":"cqz","palCn":"青碧"},{"n":37,"src":9,"pal":"pine","depth":0,"a1":"#1E332C","a2":"#529881","bg2":"#F3F7F6","text":"#171C1A","font":"work sans","pw":1500,"radius":6,"spacing":28,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":2.84,"g":"cqz","palCn":"松绿"},{"n":38,"src":2,"pal":"moss","depth":0,"a1":"#263220","a2":"#6B9457","bg2":"#F4F7F3","text":"#191C17","font":"poppins","pw":1600,"radius":12,"spacing":48,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":2.57,"g":"cqz","palCn":"苔绿"},{"n":39,"src":5,"pal":"olive","depth":0,"a1":"#2F331E","a2":"#818F4D","bg2":"#F6F7F3","text":"#1B1C17","font":"rubik","pw":1200,"radius":24,"spacing":16,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":2.99,"g":"cqz","palCn":"橄榄"},{"n":40,"src":8,"pal":"ochre","depth":0,"a1":"#362F1C","a2":"#9E8747","bg2":"#F8F6F2","text":"#1D1B16","font":"source sans pro","pw":1250,"radius":0,"spacing":36,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.79,"g":"cqz","palCn":"赭石"},{"n":41,"src":1,"pal":"clay","depth":0,"a1":"#37251B","a2":"#A46946","bg2":"#F8F4F2","text":"#1D1916","font":"helvetica","pw":1300,"radius":4,"spacing":56,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.02,"g":"cqz","palCn":"陶土"},{"n":42,"src":4,"pal":"rust","depth":0,"a1":"#38211A","a2":"#A95A42","bg2":"#F8F3F1","text":"#1D1716","font":"karla","pw":1350,"radius":8,"spacing":24,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":3.46,"g":"cqz","palCn":"铁锈"},{"n":43,"src":7,"pal":"wine","depth":0,"a1":"#361C21","a2":"#A2495B","bg2":"#F8F2F3","text":"#1D1617","font":"quicksand","pw":1400,"radius":16,"spacing":44,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":2.83,"g":"cqz","palCn":"酒红"},{"n":44,"src":10,"pal":"rose","depth":0,"a1":"#331E27","a2":"#98526F","bg2":"#F7F3F4","text":"#1C1719","font":"assistant","pw":1450,"radius":40,"spacing":0,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.35,"g":"cqz","palCn":"玫瑰"},{"n":45,"src":3,"pal":"plum","depth":0,"a1":"#341E30","a2":"#9B508E","bg2":"#F7F2F6","text":"#1C171B","font":"montserrat","pw":1500,"radius":2,"spacing":32,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.36,"g":"cqz","palCn":"梅紫"},{"n":46,"src":6,"pal":"violet","depth":0,"a1":"#2A1D35","a2":"#784D9D","bg2":"#F5F2F7","text":"#1A161D","font":"jost","pw":1600,"radius":6,"spacing":52,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.5,"g":"cqz","palCn":"紫罗兰"},{"n":47,"src":9,"pal":"indigo","depth":0,"a1":"#201B37","a2":"#5946A4","bg2":"#F3F2F8","text":"#17161D","font":"work sans","pw":1200,"radius":12,"spacing":20,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.12,"g":"cqz","palCn":"靛蓝"},{"n":48,"src":2,"pal":"dusk","depth":0,"a1":"#202032","a2":"#575794","bg2":"#F3F3F7","text":"#17171C","font":"poppins","pw":1250,"radius":24,"spacing":40,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":3.36,"g":"cqz","palCn":"暮蓝"},{"n":49,"src":5,"pal":"sand","depth":0,"a1":"#302B21","a2":"#8F7C5B","bg2":"#F6F5F3","text":"#1B1A18","font":"rubik","pw":1300,"radius":0,"spacing":60,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":2.65,"g":"cqz","palCn":"沙褐"},{"n":50,"src":8,"pal":"cocoa","depth":0,"a1":"#322820","a2":"#947157","bg2":"#F7F5F3","text":"#1C1917","font":"source sans pro","pw":1350,"radius":4,"spacing":28,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.46,"g":"cqz","palCn":"可可"},{"n":51,"src":1,"pal":"graphite","depth":1,"a1":"#2D3034","a2":"#747E8B","bg2":"#F7F7F8","text":"#1B1C1D","font":"helvetica","pw":1400,"radius":8,"spacing":48,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":2.83,"g":"cqz","palCn":"石墨灰"},{"n":52,"src":4,"pal":"ink","depth":1,"a1":"#26293B","a2":"#61699E","bg2":"#F6F6F9","text":"#1A1A1E","font":"karla","pw":1450,"radius":16,"spacing":16,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":3.23,"g":"cqz","palCn":"墨黑"},{"n":53,"src":7,"pal":"navy","depth":1,"a1":"#1F2942","a2":"#4A6AB5","bg2":"#F5F6FA","text":"#181B20","font":"quicksand","pw":1500,"radius":40,"spacing":36,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":3.22,"g":"cqz","palCn":"藏青"},{"n":54,"src":10,"pal":"cobalt","depth":1,"a1":"#192A48","a2":"#376CC8","bg2":"#F4F6FB","text":"#171B21","font":"assistant","pw":1600,"radius":2,"spacing":56,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.3,"g":"cqz","palCn":"钴蓝"},{"n":55,"src":3,"pal":"steel","depth":1,"a1":"#25323B","a2":"#5E85A1","bg2":"#F6F8F9","text":"#1A1C1E","font":"montserrat","pw":1200,"radius":6,"spacing":24,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.64,"g":"cqz","palCn":"钢蓝"},{"n":56,"src":6,"pal":"teal","depth":1,"a1":"#213D40","a2":"#48959E","bg2":"#F5F9FA","text":"#191F1F","font":"jost","pw":1250,"radius":12,"spacing":44,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.22,"g":"hyl","palCn":"青碧"},{"n":57,"src":9,"pal":"pine","depth":1,"a1":"#233E35","a2":"#4B957D","bg2":"#F5F9F8","text":"#191F1D","font":"work sans","pw":1300,"radius":24,"spacing":0,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.13,"g":"hyl","palCn":"松绿"},{"n":58,"src":2,"pal":"moss","depth":1,"a1":"#2C3C24","a2":"#6A9754","bg2":"#F7F9F6","text":"#1B1F19","font":"poppins","pw":1350,"radius":0,"spacing":32,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":2.47,"g":"hyl","palCn":"苔绿"},{"n":59,"src":5,"pal":"olive","depth":1,"a1":"#393E23","a2":"#839249","bg2":"#F9F9F5","text":"#1E1F19","font":"rubik","pw":1400,"radius":4,"spacing":52,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":2.84,"g":"hyl","palCn":"橄榄"},{"n":60,"src":8,"pal":"ochre","depth":1,"a1":"#42391F","a2":"#9F8641","bg2":"#FAF9F5","text":"#201E18","font":"source sans pro","pw":1450,"radius":8,"spacing":20,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.85,"g":"hyl","palCn":"赭石"},{"n":61,"src":1,"pal":"clay","depth":1,"a1":"#432C1E","a2":"#B87147","bg2":"#FAF7F5","text":"#201B18","font":"helvetica","pw":1500,"radius":16,"spacing":40,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.55,"g":"hyl","palCn":"陶土"},{"n":62,"src":4,"pal":"rust","depth":1,"a1":"#45261C","a2":"#BD5F42","bg2":"#FAF6F4","text":"#201A18","font":"karla","pw":1600,"radius":40,"spacing":60,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":2.92,"g":"hyl","palCn":"铁锈"},{"n":63,"src":7,"pal":"wine","depth":1,"a1":"#421F26","a2":"#B54A60","bg2":"#FAF5F6","text":"#20181A","font":"quicksand","pw":1200,"radius":2,"spacing":28,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":3.75,"g":"hyl","palCn":"酒红"},{"n":64,"src":10,"pal":"rose","depth":1,"a1":"#3E232E","a2":"#AA5578","bg2":"#F9F5F7","text":"#1F191C","font":"assistant","pw":1250,"radius":6,"spacing":48,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.34,"g":"hyl","palCn":"玫瑰"},{"n":65,"src":3,"pal":"plum","depth":1,"a1":"#3F223A","a2":"#AC539D","bg2":"#F9F5F9","text":"#1F191E","font":"montserrat","pw":1300,"radius":12,"spacing":16,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.07,"g":"hyl","palCn":"梅紫"},{"n":66,"src":6,"pal":"violet","depth":1,"a1":"#312140","a2":"#8350AF","bg2":"#F7F5FA","text":"#1C191F","font":"jost","pw":1350,"radius":24,"spacing":36,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.64,"g":"hyl","palCn":"紫罗兰"},{"n":67,"src":9,"pal":"indigo","depth":1,"a1":"#251E43","a2":"#5E47B8","bg2":"#F6F5FA","text":"#1A1820","font":"work sans","pw":1400,"radius":0,"spacing":56,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":2.48,"g":"hyl","palCn":"靛蓝"},{"n":68,"src":2,"pal":"dusk","depth":1,"a1":"#24243C","a2":"#5B5BA4","bg2":"#F6F6F9","text":"#19191F","font":"poppins","pw":1450,"radius":4,"spacing":24,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":3.04,"g":"hyl","palCn":"暮蓝"},{"n":69,"src":5,"pal":"sand","depth":1,"a1":"#3B3326","a2":"#9E8861","bg2":"#F9F8F6","text":"#1E1D1A","font":"rubik","pw":1500,"radius":8,"spacing":44,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":2.92,"g":"hyl","palCn":"沙褐"},{"n":70,"src":8,"pal":"cocoa","depth":1,"a1":"#3C2F24","a2":"#A47B5B","bg2":"#F9F7F6","text":"#1F1C19","font":"source sans pro","pw":1600,"radius":16,"spacing":0,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":3.49,"g":"hyl","palCn":"可可"},{"n":71,"src":1,"pal":"graphite","depth":2,"a1":"#33373D","a2":"#656E7B","bg2":"#F1F2F3","text":"#1E1E1F","font":"helvetica","pw":1200,"radius":40,"spacing":32,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.23,"g":"hyl","palCn":"石墨灰"},{"n":72,"src":4,"pal":"ink","depth":2,"a1":"#2B2F45","a2":"#535A8E","bg2":"#F0F0F5","text":"#1C1D21","font":"karla","pw":1250,"radius":2,"spacing":52,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":3.05,"g":"hyl","palCn":"墨黑"},{"n":73,"src":7,"pal":"navy","depth":2,"a1":"#222F4E","a2":"#3D5CA3","bg2":"#EEF0F7","text":"#1B1D23","font":"quicksand","pw":1300,"radius":6,"spacing":20,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":3.4,"g":"hyl","palCn":"藏青"},{"n":74,"src":10,"pal":"cobalt","depth":2,"a1":"#193057","a2":"#2A5EB6","bg2":"#ECF1F9","text":"#191D24","font":"assistant","pw":1350,"radius":12,"spacing":40,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":2.82,"g":"hyl","palCn":"钴蓝"},{"n":75,"src":3,"pal":"steel","depth":2,"a1":"#2A3A46","a2":"#507691","bg2":"#EFF3F5","text":"#1C1F21","font":"montserrat","pw":1400,"radius":24,"spacing":60,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":2.77,"g":"hyl","palCn":"钢蓝"},{"n":76,"src":6,"pal":"teal","depth":2,"a1":"#24484C","a2":"#42959E","bg2":"#EEF6F6","text":"#1B2222","font":"jost","pw":1450,"radius":0,"spacing":28,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.0,"g":"hyl","palCn":"青碧"},{"n":77,"src":9,"pal":"pine","depth":2,"a1":"#264A3E","a2":"#48997E","bg2":"#EFF6F3","text":"#1B2220","font":"work sans","pw":1500,"radius":4,"spacing":48,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.07,"g":"hyl","palCn":"松绿"},{"n":78,"src":2,"pal":"moss","depth":2,"a1":"#334729","a2":"#65934D","bg2":"#F1F5EF","text":"#1E211C","font":"poppins","pw":1600,"radius":8,"spacing":16,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":2.99,"g":"hyl","palCn":"苔绿"},{"n":79,"src":5,"pal":"olive","depth":2,"a1":"#434A26","a2":"#829245","bg2":"#F4F6EF","text":"#21221B","font":"rubik","pw":1200,"radius":16,"spacing":36,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":3.07,"g":"hyl","palCn":"橄榄"},{"n":80,"src":8,"pal":"ochre","depth":2,"a1":"#4E4322","a2":"#A3883D","bg2":"#F7F4EE","text":"#23201B","font":"source sans pro","pw":1250,"radius":40,"spacing":56,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.89,"g":"hyl","palCn":"赭石"},{"n":81,"src":1,"pal":"clay","depth":2,"a1":"#503221","a2":"#A6623A","bg2":"#F7F1ED","text":"#231D1A","font":"helvetica","pw":1300,"radius":2,"spacing":24,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":2.67,"g":"lh","palCn":"陶土"},{"n":82,"src":4,"pal":"rust","depth":2,"a1":"#522A1E","a2":"#AB5135","bg2":"#F8EFED","text":"#231C1A","font":"karla","pw":1350,"radius":6,"spacing":44,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":2.69,"g":"lh","palCn":"铁锈"},{"n":83,"src":7,"pal":"wine","depth":2,"a1":"#4E222B","a2":"#A33D52","bg2":"#F7EEEF","text":"#231B1C","font":"quicksand","pw":1400,"radius":12,"spacing":0,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":3.09,"g":"lh","palCn":"酒红"},{"n":84,"src":10,"pal":"rose","depth":2,"a1":"#4A2635","a2":"#994869","bg2":"#F6EFF2","text":"#221B1E","font":"assistant","pw":1450,"radius":24,"spacing":32,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.75,"g":"lh","palCn":"玫瑰"},{"n":85,"src":3,"pal":"plum","depth":2,"a1":"#4B2545","a2":"#9B458D","bg2":"#F6EEF5","text":"#221B21","font":"montserrat","pw":1500,"radius":0,"spacing":52,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.37,"g":"lh","palCn":"梅紫"},{"n":86,"src":6,"pal":"violet","depth":2,"a1":"#39244C","a2":"#73429E","bg2":"#F3EEF6","text":"#1F1B22","font":"jost","pw":1600,"radius":4,"spacing":20,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.51,"g":"lh","palCn":"紫罗兰"},{"n":87,"src":9,"pal":"indigo","depth":2,"a1":"#2A2150","a2":"#503AA6","bg2":"#EFEDF7","text":"#1C1A23","font":"work sans","pw":1200,"radius":8,"spacing":40,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.25,"g":"lh","palCn":"靛蓝"},{"n":88,"src":2,"pal":"dusk","depth":2,"a1":"#292947","a2":"#4D4D93","bg2":"#EFEFF5","text":"#1C1C21","font":"poppins","pw":1250,"radius":16,"spacing":60,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":3.61,"g":"lh","palCn":"暮蓝"},{"n":89,"src":5,"pal":"sand","depth":2,"a1":"#453C2B","a2":"#8E7853","bg2":"#F5F3F0","text":"#211F1C","font":"rubik","pw":1300,"radius":40,"spacing":28,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":2.72,"g":"lh","palCn":"沙褐"},{"n":90,"src":8,"pal":"cocoa","depth":2,"a1":"#473629","a2":"#936C4D","bg2":"#F5F2EF","text":"#211E1C","font":"source sans pro","pw":1350,"radius":2,"spacing":48,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.89,"g":"lh","palCn":"可可"},{"n":91,"src":1,"pal":"graphite","depth":3,"a1":"#3A3F46","a2":"#788291","bg2":"#F7F7F8","text":"#202122","font":"helvetica","pw":1400,"radius":6,"spacing":16,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.35,"g":"lh","palCn":"石墨灰"},{"n":92,"src":4,"pal":"ink","depth":3,"a1":"#303450","a2":"#626BA8","bg2":"#F6F6F9","text":"#1F1F24","font":"karla","pw":1450,"radius":12,"spacing":36,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":3.31,"g":"lh","palCn":"墨黑"},{"n":93,"src":7,"pal":"navy","depth":3,"a1":"#24355C","a2":"#486CC1","bg2":"#F4F6FA","text":"#1D1F26","font":"quicksand","pw":1500,"radius":24,"spacing":56,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":2.88,"g":"lh","palCn":"藏青"},{"n":94,"src":10,"pal":"cobalt","depth":3,"a1":"#1A3666","a2":"#326FD7","bg2":"#F3F6FC","text":"#1B2027","font":"assistant","pw":1600,"radius":0,"spacing":24,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.11,"g":"lh","palCn":"钴蓝"},{"n":95,"src":3,"pal":"steel","depth":3,"a1":"#2E4351","a2":"#5E8BAB","bg2":"#F5F8F9","text":"#1E2224","font":"montserrat","pw":1200,"radius":4,"spacing":44,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":2.86,"g":"lh","palCn":"钢蓝"},{"n":96,"src":6,"pal":"teal","depth":3,"a1":"#275459","a2":"#3D949E","bg2":"#F5FAFA","text":"#1D2425","font":"jost","pw":1250,"radius":8,"spacing":0,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.51,"g":"lh","palCn":"青碧"},{"n":97,"src":9,"pal":"pine","depth":3,"a1":"#2A5647","a2":"#43987C","bg2":"#F5FAF8","text":"#1E2522","font":"work sans","pw":1300,"radius":16,"spacing":32,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":2.53,"g":"lh","palCn":"松绿"},{"n":98,"src":2,"pal":"moss","depth":3,"a1":"#39532D","a2":"#64964A","bg2":"#F7F9F5","text":"#20241E","font":"poppins","pw":1350,"radius":40,"spacing":52,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":3.32,"g":"lh","palCn":"苔绿"},{"n":99,"src":5,"pal":"olive","depth":3,"a1":"#4D562A","a2":"#819140","bg2":"#F9FAF5","text":"#23251E","font":"rubik","pw":1400,"radius":2,"spacing":20,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":3.06,"g":"lh","palCn":"橄榄"},{"n":100,"src":8,"pal":"ochre","depth":3,"a1":"#5C4D24","a2":"#A48737","bg2":"#FAF9F4","text":"#26231D","font":"source sans pro","pw":1450,"radius":6,"spacing":40,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.98,"g":"lh","palCn":"赭石"},{"n":101,"src":1,"pal":"clay","depth":3,"a1":"#5D3822","a2":"#C47445","bg2":"#FBF6F4","text":"#26201D","font":"helvetica","pw":1500,"radius":12,"spacing":60,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.27,"g":"lh","palCn":"陶土"},{"n":102,"src":4,"pal":"rust","depth":3,"a1":"#602F1F","a2":"#CB5F3F","bg2":"#FBF5F4","text":"#261E1C","font":"karla","pw":1600,"radius":24,"spacing":28,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":3.38,"g":"lh","palCn":"铁锈"},{"n":103,"src":7,"pal":"wine","depth":3,"a1":"#5C242F","a2":"#C14860","bg2":"#FAF4F6","text":"#261D1F","font":"quicksand","pw":1200,"radius":0,"spacing":48,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":2.77,"g":"lh","palCn":"酒红"},{"n":104,"src":10,"pal":"rose","depth":3,"a1":"#562A3C","a2":"#B4557D","bg2":"#FAF5F7","text":"#251E21","font":"assistant","pw":1250,"radius":4,"spacing":16,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.51,"g":"lh","palCn":"玫瑰"},{"n":105,"src":3,"pal":"plum","depth":3,"a1":"#57284F","a2":"#B852A7","bg2":"#FAF5F9","text":"#251D24","font":"montserrat","pw":1300,"radius":8,"spacing":36,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.13,"g":"lh","palCn":"梅紫"},{"n":106,"src":6,"pal":"violet","depth":3,"a1":"#412759","a2":"#884EBB","bg2":"#F8F5FA","text":"#211D25","font":"jost","pw":1350,"radius":16,"spacing":56,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":2.81,"g":"mcy","palCn":"紫罗兰"},{"n":107,"src":9,"pal":"indigo","depth":3,"a1":"#2E225D","a2":"#5E45C4","bg2":"#F5F4FB","text":"#1E1D26","font":"work sans","pw":1400,"radius":40,"spacing":24,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.17,"g":"mcy","palCn":"靛蓝"},{"n":108,"src":2,"pal":"dusk","depth":3,"a1":"#2D2D53","a2":"#5B5BAE","bg2":"#F5F5F9","text":"#1E1E24","font":"poppins","pw":1450,"radius":2,"spacing":44,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":3.07,"g":"mcy","palCn":"暮蓝"},{"n":109,"src":5,"pal":"sand","depth":3,"a1":"#504430","a2":"#A18659","bg2":"#F9F8F6","text":"#24221F","font":"rubik","pw":1500,"radius":6,"spacing":0,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":3.12,"g":"mcy","palCn":"沙褐"},{"n":110,"src":8,"pal":"cocoa","depth":3,"a1":"#533D2D","a2":"#AE7F5B","bg2":"#F9F7F5","text":"#24211E","font":"source sans pro","pw":1600,"radius":12,"spacing":32,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.39,"g":"mcy","palCn":"可可"},{"n":111,"src":1,"pal":"graphite","depth":4,"a1":"#40464F","a2":"#6D7888","bg2":"#F4F5F6","text":"#232425","font":"helvetica","pw":1200,"radius":24,"spacing":52,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.09,"g":"mcy","palCn":"石墨灰"},{"n":112,"src":4,"pal":"ink","depth":4,"a1":"#34395B","a2":"#555FA0","bg2":"#F2F3F7","text":"#212226","font":"karla","pw":1250,"radius":0,"spacing":20,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":3.43,"g":"mcy","palCn":"墨黑"},{"n":113,"src":7,"pal":"navy","depth":4,"a1":"#253A69","a2":"#3960BC","bg2":"#F0F3F9","text":"#1F2228","font":"quicksand","pw":1300,"radius":4,"spacing":40,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":3.09,"g":"mcy","palCn":"藏青"},{"n":114,"src":10,"pal":"cobalt","depth":4,"a1":"#193B76","a2":"#2163D4","bg2":"#EFF3FB","text":"#1D222A","font":"assistant","pw":1350,"radius":8,"spacing":60,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":3.05,"g":"mcy","palCn":"钴蓝"},{"n":115,"src":3,"pal":"steel","depth":4,"a1":"#324B5D","a2":"#5181A4","bg2":"#F2F5F8","text":"#212427","font":"montserrat","pw":1400,"radius":16,"spacing":28,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":3.13,"g":"mcy","palCn":"钢蓝"},{"n":116,"src":6,"pal":"teal","depth":4,"a1":"#296066","a2":"#3997A2","bg2":"#F1F8F9","text":"#1F2728","font":"jost","pw":1450,"radius":40,"spacing":48,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":3.08,"g":"mcy","palCn":"青碧"},{"n":117,"src":9,"pal":"pine","depth":4,"a1":"#2D6250","a2":"#3E987A","bg2":"#F1F8F6","text":"#202725","font":"work sans","pw":1500,"radius":2,"spacing":16,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.35,"g":"mcy","palCn":"松绿"},{"n":118,"src":2,"pal":"moss","depth":4,"a1":"#405F30","a2":"#609646","bg2":"#F4F8F2","text":"#232720","font":"poppins","pw":1600,"radius":6,"spacing":36,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":2.72,"g":"mcy","palCn":"苔绿"},{"n":119,"src":5,"pal":"olive","depth":4,"a1":"#57622D","a2":"#80913B","bg2":"#F7F8F1","text":"#262720","font":"rubik","pw":1200,"radius":12,"spacing":56,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":2.84,"g":"mcy","palCn":"橄榄"},{"n":120,"src":8,"pal":"ochre","depth":4,"a1":"#695725","a2":"#A48632","bg2":"#F9F7F0","text":"#28261F","font":"source sans pro","pw":1250,"radius":24,"spacing":24,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":3.45,"g":"mcy","palCn":"赭石"},{"n":121,"src":1,"pal":"clay","depth":4,"a1":"#6B3E24","a2":"#BF6836","bg2":"#F9F4F0","text":"#29221F","font":"helvetica","pw":1300,"radius":0,"spacing":44,"sections":8,"layout":["文字标题","双图并排","滚动条","分栏内容","对比表","常见问题","订阅","联系表单"],"mb":3.3,"g":"mcy","palCn":"陶土"},{"n":122,"src":4,"pal":"rust","depth":4,"a1":"#6F3220","a2":"#C6522F","bg2":"#FAF2F0","text":"#29211E","font":"karla","pw":1350,"radius":4,"spacing":0,"sections":8,"layout":["文字标题","多列卡片","图文左右","选项卡","分隔条","常见问题","订阅","联系表单"],"mb":4.01,"g":"mcy","palCn":"铁锈"},{"n":123,"src":7,"pal":"wine","depth":4,"a1":"#692533","a2":"#BC3953","bg2":"#F9F0F2","text":"#281F21","font":"quicksand","pw":1400,"radius":8,"spacing":32,"sections":8,"layout":["大图横幅","选项卡","对比表","多列卡片","滚动条","常见问题","联系表单","订阅"],"mb":3.02,"g":"mcy","palCn":"酒红"},{"n":124,"src":10,"pal":"rose","depth":4,"a1":"#622D43","a2":"#AE4772","bg2":"#F8F1F4","text":"#272023","font":"assistant","pw":1450,"radius":16,"spacing":52,"sections":9,"layout":["大图横幅","滚动条","多列卡片","图文左右","对比表","步骤说明","常见问题","联系表单","订阅"],"mb":2.63,"g":"mcy","palCn":"玫瑰"},{"n":125,"src":3,"pal":"plum","depth":4,"a1":"#642B5A","a2":"#B1449F","bg2":"#F9F1F7","text":"#282026","font":"montserrat","pw":1500,"radius":40,"spacing":20,"sections":8,"layout":["轮播","步骤说明","多列卡片","对比表","多行图文","常见问题","订阅","联系表单"],"mb":2.86,"g":"mcy","palCn":"梅紫"},{"n":126,"src":6,"pal":"violet","depth":4,"a1":"#492966","a2":"#7E40B5","bg2":"#F5F1F9","text":"#241F28","font":"jost","pw":1600,"radius":2,"spacing":40,"sections":7,"layout":["大图横幅","多列卡片","图文左右","对比表","内容块","常见问题","订阅"],"mb":2.79,"g":"mcy","palCn":"紫罗兰"},{"n":127,"src":9,"pal":"indigo","depth":4,"a1":"#32246B","a2":"#5136BF","bg2":"#F2F0F9","text":"#211F29","font":"work sans","pw":1200,"radius":6,"spacing":60,"sections":8,"layout":["文字标题","多行图文","对比表","步骤说明","多列卡片","常见问题","订阅","联系表单"],"mb":3.27,"g":"mcy","palCn":"靛蓝"},{"n":128,"src":2,"pal":"dusk","depth":4,"a1":"#30305F","a2":"#4E4EA7","bg2":"#F2F2F8","text":"#202027","font":"poppins","pw":1250,"radius":12,"spacing":28,"sections":8,"layout":["大图横幅","图文左右","滚动条","步骤说明","内容块","常见问题","订阅","联系表单"],"mb":3.79,"g":"mcy","palCn":"暮蓝"},{"n":129,"src":5,"pal":"sand","depth":4,"a1":"#5B4D34","a2":"#A08455","bg2":"#F7F5F2","text":"#262421","font":"rubik","pw":1300,"radius":24,"spacing":48,"sections":8,"layout":["轮播","对比表","多行图文","分栏内容","选项卡","常见问题","联系表单","订阅"],"mb":3.09,"g":"mcy","palCn":"沙褐"},{"n":130,"src":8,"pal":"cocoa","depth":4,"a1":"#5F4430","a2":"#A7744E","bg2":"#F8F4F2","text":"#272320","font":"source sans pro","pw":1350,"radius":0,"spacing":16,"sections":8,"layout":["轮播","图文左右","分栏内容","选项卡","内容块","常见问题","订阅","联系表单"],"mb":2.59,"g":"mcy","palCn":"可可"}];
+const GROUPS = [{"key":"cqz","label":"cqz"},{"key":"hyl","label":"hyl"},{"key":"lh","label":"lh"},{"key":"mcy","label":"mcy"}];
+const PER = 25;
+
+let active = GROUPS[0].key;
+
+function tabHtml(){
+  return GROUPS.map(g=>{
+    const rows = DATA.filter(r=>r.g===g.key);
+    const lo = rows.length? rows[0].n : 0, hi = rows.length? rows[rows.length-1].n : 0;
+    return `<button class="tab" role="tab" data-g="${g.key}"
+      aria-selected="${g.key===active}">
+      <b>${g.label}</b><small>${rows.length} 个 · ${lo}–${hi}</small></button>`;
+  }).join('');
+}
+
+function cardHtml(r){
+  const chips = r.layout.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join('')
+    + (r.layout.length>4?`<span class="chip">+${r.layout.length-4}</span>`:'');
+  return `<article class="card">
+    <div class="card-top">
+      <span class="num">theme${r.n}</span>
+      <span class="sz">${r.mb} MB</span>
+    </div>
+    <div class="sw" title="${r.a1} / ${r.a2} / ${r.bg2} / ${r.text}">
+      <i style="background:${r.a1}"></i><i style="background:${r.a2}"></i>
+      <i style="background:${r.bg2}"></i><i style="background:${r.text}"></i>
+    </div>
+    <dl class="meta">
+      <dt>配色</dt><dd title="${r.pal}">${r.palCn}</dd>
+      <dt>字体</dt><dd>${r.font}</dd>
+      <dt>页宽</dt><dd>${r.pw}px</dd>
+      <dt>圆角</dt><dd>${r.radius}px</dd>
+    </dl>
+    <div class="chips">${chips}</div>
+    <a class="dl" href="themes/theme${r.n}.zip" download>下载 theme${r.n}.zip</a>
+  </article>`;
+}
+
+function render(){
+  document.getElementById('tabs').innerHTML = tabHtml();
+  document.querySelectorAll('.tab').forEach(el=>{
+    el.onclick = ()=>{ active = el.dataset.g; render(); };
+  });
+  const rows = DATA.filter(r=>r.g===active);
+  const q = document.getElementById('q').value.trim();
+  const shown = q ? rows.filter(r=>String(r.n).includes(q)) : rows;
+  document.getElementById('groupName').textContent = active;
+  const totalMb = rows.reduce((s,r)=>s+r.mb, 0).toFixed(1);
+  document.getElementById('groupRange').textContent =
+    rows.length ? `${rows[0].n} – ${rows[rows.length-1].n} · 共 ${rows.length} 个 · ${totalMb} MB` : '';
+  document.getElementById('grid').innerHTML =
+    shown.length ? shown.map(cardHtml).join('')
+                 : '<div class="empty">没有匹配的编号</div>';
+}
+
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('copy').onclick = async ()=>{
+  const rows = DATA.filter(r=>r.g===active);
+  const base = location.href.replace(/[^/]*$/,'');
+  const text = rows.map(r=>`theme${r.n}\t${base}themes/theme${r.n}.zip`).join('\n');
+  try{
+    await navigator.clipboard.writeText(text);
+    const b = document.getElementById('copy');
+    b.textContent = '已复制 ' + rows.length + ' 条'; 
+    setTimeout(()=>b.textContent='复制本组链接', 1800);
+  }catch(e){ alert('复制失败，请手动选择'); }
+};
+render();
+</script>
+</body>
+</html>
