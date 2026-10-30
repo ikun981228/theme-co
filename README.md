@@ -1,15 +1,15 @@
 # 主题包下载
 
-100 个 Shopify 主题包，按标签平均分成 4 组，每组 25 个。
+300 个 Shopify 主题包，按标签分成 4 组，每人 75 个（原有 25 个 + 新增 50 个）。
 
 打开 **index.html**（或 GitHub Pages 地址），选自己的标签，下载对应的主题包。
 
 | 标签 | 主题范围 | 数量 |
 | --- | --- | --- |
-| cqz | theme31 – theme55 | 25 |
-| hyl | theme56 – theme80 | 25 |
-| lh  | theme81 – theme105 | 25 |
-| mcy | theme106 – theme130 | 25 |
+| cqz | theme31 – theme55、theme131 – theme180 | 75 |
+| hyl | theme56 – theme80、theme181 – theme230 | 75 |
+| lh  | theme81 – theme105、theme231 – theme280 | 75 |
+| mcy | theme106 – theme130、theme281 – theme330 | 75 |
 
 ## 怎么用
 
@@ -29,13 +29,11 @@
 
 支付相关配置（购物车抽屉、结账按钮、支付图标等 127 项）全部保持一致，未做任何改动。
 
-## 目录
+## 配色
 
-```
-index.html          下载页（单文件，无外部依赖）
-themes/             100 个主题包
-```
+300 个主题使用 300 套互不重复的配色：
 
-## 部署到 GitHub Pages
+- theme31 – theme130：20 个色相 × 5 个深度
+- theme131 – theme330：40 个色相 × 5 个深度（与上一批零重复）
 
-仓库 Settings → Pages → Source 选 `Deploy from a branch`，分支 `main`，目录 `/ (root)`，保存后等一两分钟即可访问。
+字体、页宽、圆角、区块间距、阴影在 10 套字体与多档形状参数间轮换。
