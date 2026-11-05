@@ -284,7 +284,7 @@ function cardHtml(r){
 function currentRows(){
   return stateRows()
     .filter(r=> activeState==='all' || (activeState==='used' ? isUsed(r.n) : !isUsed(r.n)))
-    .sort((a,b)=>b.n-a.n);   // 新批次排前面
+    .sort((a,b)=>a.n-b.n);   // 按编号正序
 }
 
 function render(){
