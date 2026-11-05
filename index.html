@@ -42,7 +42,9 @@
   .tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent)}
   .tab[aria-selected="true"] b,.tab[aria-selected="true"] small{color:var(--accent-ink)}
 
-  .dates{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 0}
+  .dates,.states{display:flex;gap:8px;flex-wrap:wrap}
+  .states{margin-left:auto}
   .date{
     display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:99px;
     border:1px solid var(--line);background:var(--card);color:var(--muted);
@@ -55,6 +57,8 @@
   .date[aria-selected="true"] b,.date[aria-selected="true"] i{color:var(--accent-ink)}
   .date.today:not([aria-selected="true"]){border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.06)}
   .date.today:not([aria-selected="true"]) i{color:#111827;font-weight:600}
+  .states .date[aria-selected="true"]{background:#047857;border-color:#047857}
+  .states .date[data-s="used"][aria-selected="true"]{background:#111827;border-color:#111827}
 
   .bar{display:flex;align-items:center;gap:14px;margin:26px 0 16px;flex-wrap:wrap}
   .bar h2{margin:0;font-size:15px;font-weight:650}
@@ -85,7 +89,15 @@
       background:var(--bg);border:1px solid var(--line);color:var(--muted);
       font-variant-numeric:tabular-nums}
   .bd.new{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-  .sz{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .bd.used{background:#ecfdf5;border-color:#a7f3d0;color:#047857;font-weight:600;cursor:pointer}
+  .chip.used-chip{background:#ecfdf5;border-color:#a7f3d0;color:#047857;font-weight:600;cursor:pointer}
+  .card.used{background:#fafafa}
+  .card.used .num{color:#9ca3af}
+  .card.used .sw{opacity:.5}
+  .card.used .dl{background:#6b7280}
+  .card.used .dl:hover{background:#4b5563}
+  .sz{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;
+      white-space:nowrap;flex:0 0 auto}
   .sw{display:flex;height:8px;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
   .sw i{flex:1}
   .meta{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px;margin:0}
@@ -103,6 +115,11 @@
   .empty{grid-column:1/-1;padding:60px 0;text-align:center;color:var(--muted);font-size:14px}
   footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);
          color:var(--muted);font-size:12.5px}
+  footer p{margin:0 0 8px}
+  footer .tip{color:#9ca3af}
+  footer .tip b{color:#047857;font-weight:600}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .tools .copy{font-size:12.5px;padding:6px 11px}
   footer code{background:var(--card);border:1px solid var(--line);border-radius:5px;
               padding:1px 5px;font-size:12px}
   @media (max-width:600px){
@@ -115,6 +132,8 @@
     .tab b{font-size:14px}
     .tab small{font-size:10.5px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:100%}
     .bar{gap:10px;margin:18px 0 12px}
+    .states{margin-left:0;width:100%}
+    .states .date{flex:1 1 0;justify-content:center;padding:7px 8px}
     .bar h2{font-size:14px}
     .bar .range{font-size:11.5px;flex:1 1 100%;order:3;margin-top:-4px}
     .bar .spacer{display:none}
@@ -130,11 +149,14 @@
 
   <header>
     <h1>主题包下载</h1>
-    <p>共 500 个主题包，按标签分成 4 组，每人 125 个。分三批上传：<b>10-27</b>（100 个）、<b>10-30</b>（200 个）、<b>11-05</b>（200 个，今天新增）。可以按日期筛选，新批次在卡片上有黑色日期标签。</p>
+    <p>共 500 个主题包，按标签分成 4 组，每人 125 个。分三批上传：<b>10-27</b>（100 个）、<b>10-30</b>（200 个）、<b>11-05</b>（200 个，今天新增）。可以按日期筛选，新批次在卡片上有黑色日期标签；下载过的会自动标成 <b>✓ 已使用</b>，记录存在本机浏览器。</p>
   </header>
 
   <div class="tabs" role="tablist" id="tabs"></div>
-  <div class="dates" role="tablist" id="dates"></div>
+  <div class="filters">
+    <div class="dates" role="tablist" id="dates"></div>
+    <div class="states" role="tablist" id="states"></div>
+  </div>
 
   <div class="bar">
     <h2 id="groupName"></h2>
@@ -147,8 +169,16 @@
   <div class="grid" id="grid"></div>
 
   <footer>
-    下载后到 Shopify 后台 → 在线商店 → 主题 → 添加主题 → 上传 zip 文件。
-    每个包都已包含完整的 427 个文件，根目录为 <code>layout/theme.liquid</code>，可直接上传。
+    <p>下载后到 Shopify 后台 → 在线商店 → 主题 → 添加主题 → 上传 zip 文件。
+    每个包都已包含完整的 427 个文件，根目录为 <code>layout/theme.liquid</code>，可直接上传。</p>
+    <p class="tip">「已使用」记录保存在当前浏览器里，换设备或清缓存会丢失，可以用下面的按钮导出备份。
+      点卡片上的 <b>✓ 已使用</b> 可以取消标记。</p>
+    <div class="tools">
+      <button class="copy" id="exportBtn">导出使用记录</button>
+      <button class="copy" id="importBtn">导入记录</button>
+      <button class="copy" id="resetBtn">清空记录</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
   </footer>
 </div>
 
@@ -193,10 +223,45 @@ function tabHtml(){
 const DL = 'https://cdn.jsdelivr.net/gh/ikun981228/theme-co@assets/themes/';
 function dlUrl(n){ return DL + 'theme' + n + '.zip'; }
 
+/* ---------- 使用状态（存本机 localStorage） ---------- */
+const USED_KEY = 'theme-co-used-v1';
+let used = {};
+try { used = JSON.parse(localStorage.getItem(USED_KEY) || '{}') || {}; } catch(e){ used = {}; }
+function saveUsed(){ try { localStorage.setItem(USED_KEY, JSON.stringify(used)); } catch(e){} }
+function isUsed(n){ return !!used[n]; }
+function markUsed(n){ if(!used[n]){ used[n] = today(); saveUsed(); } }
+function unmarkUsed(n){ if(used[n]){ delete used[n]; saveUsed(); } }
+function today(){
+  const d = new Date();
+  const p = x => String(x).padStart(2,'0');
+  return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate());
+}
+
+const STATES = [
+  {key:'all',    label:'全部'},
+  {key:'unused', label:'未使用'},
+  {key:'used',   label:'已使用'}
+];
+let activeState = 'all';
+
+function stateRows(){
+  return DATA.filter(r=>r.g===active && (activeDate==='all' || batchKey(r.n)===activeDate));
+}
+function statesHtml(){
+  const base = stateRows();
+  const nUsed = base.filter(r=>isUsed(r.n)).length;
+  const cnt = k => k==='all' ? base.length : (k==='used' ? nUsed : base.length - nUsed);
+  return STATES.map(s=>`<button class="date" role="tab" data-s="${s.key}"
+      aria-selected="${activeState===s.key}">
+      <b>${s.label}</b><i>${cnt(s.key)} 个</i></button>`).join('');
+}
+
 function cardHtml(r){
-  const chips = r.layout.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join('')
+  const u = isUsed(r.n);
+  const chips = (u ? `<span class="chip used-chip" data-unuse="${r.n}" title="点击取消「已使用」标记">✓ 已使用</span>` : '')
+    + r.layout.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join('')
     + (r.layout.length>4?`<span class="chip">+${r.layout.length-4}</span>`:'');
-  return `<article class="card">
+  return `<article class="card${u?' used':''}" data-n="${r.n}">
     <div class="card-top">
       <span class="num-wrap"><span class="num">theme${r.n}</span><span class="bd ${batchKey(r.n)==='1105'?'new':''}">${batchLabel(r.n)}</span></span>
       <span class="sz">${r.mb} MB</span>
@@ -212,24 +277,28 @@ function cardHtml(r){
       <dt>圆角</dt><dd>${r.radius}px</dd>
     </dl>
     <div class="chips">${chips}</div>
-    <a class="dl" href="${dlUrl(r.n)}" download>下载 theme${r.n}.zip</a>
+    <a class="dl" href="${dlUrl(r.n)}" download data-dl="${r.n}">${u?'重新下载':'下载'} theme${r.n}.zip</a>
   </article>`;
 }
 
 function currentRows(){
-  return DATA
-    .filter(r=>r.g===active && (activeDate==='all' || batchKey(r.n)===activeDate))
+  return stateRows()
+    .filter(r=> activeState==='all' || (activeState==='used' ? isUsed(r.n) : !isUsed(r.n)))
     .sort((a,b)=>b.n-a.n);   // 新批次排前面
 }
 
 function render(){
   document.getElementById('tabs').innerHTML = tabHtml();
-  document.querySelectorAll('.tab').forEach(el=>{
+  document.querySelectorAll('#tabs .tab').forEach(el=>{
     el.onclick = ()=>{ active = el.dataset.g; render(); };
   });
   document.getElementById('dates').innerHTML = datesHtml();
-  document.querySelectorAll('.date').forEach(el=>{
+  document.querySelectorAll('#dates .date').forEach(el=>{
     el.onclick = ()=>{ activeDate = el.dataset.d; render(); };
+  });
+  document.getElementById('states').innerHTML = statesHtml();
+  document.querySelectorAll('#states .date').forEach(el=>{
+    el.onclick = ()=>{ activeState = el.dataset.s; render(); };
   });
 
   const rows = currentRows();
@@ -240,12 +309,28 @@ function render(){
     active + (activeDate==='all' ? '' : ' · ' + b.label + (b.note ? ' ' + b.note : ''));
   const totalMb = rows.reduce((s,r)=>s+r.mb, 0).toFixed(1);
   const g = GROUPS.find(x=>x.key===active);
+  const usedHere = rows.filter(r=>isUsed(r.n)).length;
   document.getElementById('groupRange').textContent =
-    rows.length ? `${rangeText(g)} · 共 ${rows.length} 个 · ${totalMb} MB` : '';
+    rows.length ? `${rangeText(g)} · 共 ${rows.length} 个 · ${totalMb} MB · 已使用 ${usedHere}` : '';
   document.getElementById('grid').innerHTML =
     shown.length ? shown.map(cardHtml).join('')
                  : '<div class="empty">没有匹配的主题</div>';
 }
+
+// 点下载 → 自动标记已使用；点「✓ 已使用」→ 取消标记
+document.getElementById('grid').addEventListener('click', e=>{
+  const dl = e.target.closest('.dl');
+  if(dl){
+    markUsed(Number(dl.dataset.dl));
+    setTimeout(render, 60);   // 让浏览器先发起下载，再刷新卡片状态
+    return;
+  }
+  const un = e.target.closest('[data-unuse]');
+  if(un){
+    unmarkUsed(Number(un.dataset.unuse));
+    render();
+  }
+});
 
 document.getElementById('q').addEventListener('input', render);
 document.getElementById('copy').onclick = async ()=>{
@@ -258,6 +343,46 @@ document.getElementById('copy').onclick = async ()=>{
     setTimeout(()=>btn.textContent='复制本组链接', 1800);
   }catch(e){ alert('复制失败，请手动选择'); }
 };
+
+/* ---------- 导出 / 导入 / 清空 ---------- */
+document.getElementById('exportBtn').onclick = ()=>{
+  const payload = {version:1, exportedAt:today(), used};
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'theme-used-' + today() + '.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+};
+
+document.getElementById('importBtn').onclick = ()=> document.getElementById('importFile').click();
+
+document.getElementById('importFile').onchange = e=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    try{
+      const o = JSON.parse(rd.result);
+      const src = o && o.used ? o.used : o;
+      if(!src || typeof src !== 'object') throw new Error('格式不对');
+      Object.keys(src).forEach(k=>{
+        const n = Number(k);
+        if(Number.isFinite(n)) used[n] = typeof src[k] === 'string' ? src[k] : today();
+      });
+      saveUsed(); render();
+      alert('已导入 ' + Object.keys(src).length + ' 条使用记录');
+    }catch(err){ alert('导入失败：' + err.message); }
+    e.target.value = '';
+  };
+  rd.readAsText(f);
+};
+
+document.getElementById('resetBtn').onclick = ()=>{
+  if(!confirm('确定清空所有「已使用」标记？此操作不可撤销。')) return;
+  used = {}; saveUsed(); render();
+};
+
 render();
 </script>
 </body>
