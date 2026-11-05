@@ -153,6 +153,9 @@ function tabHtml(){
   }).join('');
 }
 
+const DL = 'https://cdn.jsdelivr.net/gh/ikun981228/theme-co@assets/themes/';
+function dlUrl(n){ return DL + 'theme' + n + '.zip'; }
+
 function cardHtml(r){
   const chips = r.layout.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join('')
     + (r.layout.length>4?`<span class="chip">+${r.layout.length-4}</span>`:'');
@@ -172,7 +175,7 @@ function cardHtml(r){
       <dt>圆角</dt><dd>${r.radius}px</dd>
     </dl>
     <div class="chips">${chips}</div>
-    <a class="dl" href="themes/theme${r.n}.zip" download>下载 theme${r.n}.zip</a>
+    <a class="dl" href="${dlUrl(r.n)}" download>下载 theme${r.n}.zip</a>
   </article>`;
 }
 
@@ -197,8 +200,7 @@ function render(){
 document.getElementById('q').addEventListener('input', render);
 document.getElementById('copy').onclick = async ()=>{
   const rows = DATA.filter(r=>r.g===active);
-  const base = location.href.replace(/[^/]*$/,'');
-  const text = rows.map(r=>`theme${r.n}\t${base}themes/theme${r.n}.zip`).join('\n');
+  const text = rows.map(r=>`theme${r.n}\t${dlUrl(r.n)}`).join('\n');
   try{
     await navigator.clipboard.writeText(text);
     const b = document.getElementById('copy');
